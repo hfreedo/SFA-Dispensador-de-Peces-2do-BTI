@@ -42,7 +42,17 @@ El servo y la tira se alimentan con una **fuente externa regulada de 5 V**, con 
 
 Consulta [Montaje y pruebas](docs/MONTAJE_Y_PRUEBAS.md) antes de energizar el prototipo.
 
-## Software necesario
+## Entrega para Windows sin Python
+
+Descarga el **ZIP portable para Windows x64** desde [Releases](https://github.com/hfreedo/SFA-Dispensador-de-Peces-2do-BTI/releases/latest), extrae su contenido y abre `SFA_Dispensador_Peces_2BTI.exe`. Incluye Python, `pyserial` y los recursos de la interfaz. No requiere instalar Python, pip ni Arduino IDE para abrir el panel.
+
+El navegador se abre automáticamente. Mantén abierta la ventana del servidor durante el uso y pulsa **Ctrl+C** allí para terminar. Consulta [la guía del portable](docs/USO_PORTABLE.txt).
+
+Compatibilidad prevista: **Windows 10/11 de 64 bits**. Para controlar el prototipo, el Arduino debe tener el firmware cargado y Windows debe reconocer su puerto COM; algunas placas requieren el controlador CH340 u otro controlador USB. Sin Internet, las animaciones decorativas usan imágenes locales de respaldo.
+
+**Para entregar a otra persona utiliza el ZIP de Releases**, no el botón «Code → Download ZIP», que descarga el código fuente.
+
+## Software necesario para desarrollar o cargar el firmware
 
 - Arduino IDE o Arduino CLI con `arduino:avr`.
 - Bibliotecas `Servo`, `LiquidCrystal I2C` y `Adafruit NeoPixel`.
@@ -62,7 +72,7 @@ arduino-cli lib install "Servo" "LiquidCrystal I2C" "Adafruit NeoPixel"
 arduino-cli compile --fqbn arduino:avr:uno SFA_Dispensador_Peces_2BTI
 ```
 
-## Ejecutar la interfaz
+## Ejecutar la interfaz desde el código fuente
 
 En Windows puede utilizarse `server/run.bat`. De forma manual:
 
@@ -72,6 +82,18 @@ python server/server.py
 ```
 
 El servidor abre `http://127.0.0.1:8765`. Si ese puerto está ocupado, busca automáticamente el siguiente disponible sin cerrar servidores ajenos.
+
+## Construir otra entrega portable
+
+En Windows con Python de 64 bits:
+
+```sh
+python -m pip install -r tools/requirements-build.txt
+python tools/build_portable.py
+python tools/verify_portable.py dist/SFA_Dispensador_Peces_2BTI_v1.1.0_Windows_x64.zip
+```
+
+El resultado y su SHA-256 quedan en `dist/`. La comprobación extrae el ZIP en una carpeta nueva con espacios y ejecuta el EXE con un PATH sin Python, desde otro directorio. Verifica el panel, los recursos, el listado COM, el puerto alternativo y el rechazo de comandos sin conexión. Es una prueba local del paquete; la prueba en un segundo equipo y con hardware real sigue pendiente.
 
 ## Comandos relevantes
 

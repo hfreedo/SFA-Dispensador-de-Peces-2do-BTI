@@ -3,23 +3,15 @@ Dispensador de Alimento para Peces - Servidor Web
 Proyecto: SFA - Dispensador de Peces 2do. BTI
 Ejecutar: python server.py
 """
-import sys, json, time, threading, socket
+import argparse, json, time, threading, socket
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import os
 
-INSTALL_MSG = """
-   No se encontro pyserial. Instalando...
-"""
-try:
-    import serial
-    import serial.tools.list_ports
-except ImportError:
-    print(INSTALL_MSG)
-    import subprocess
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pyserial', '-q'])
-    import serial
-    import serial.tools.list_ports
+import serial
+import serial.tools.list_ports
+
+VERSION = "1.1.0"
 
 HOST = "127.0.0.1"
 PORT = 8765
@@ -77,6 +69,8 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        if self.path == "/api/health":
+            return self._json({"app": "SFA_Dispensador_Peces_2BTI", "version": VERSION})
         if self.path == "/stream":
             return self._sse()
         if self.path == "/api/ports":
@@ -241,7 +235,11 @@ def serial_loop():
 
 # ─── Punto de entrada ────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    active_port = find_free_port(PORT)
+    parser = argparse.ArgumentParser(description="Interfaz local del dispensador de peces")
+    parser.add_argument("--port", type=int, default=PORT)
+    parser.add_argument("--no-browser", action="store_true")
+    args = parser.parse_args()
+    active_port = find_free_port(args.port)
     server = Pool((HOST, active_port), Handler)
     t = threading.Thread(target=serial_loop, daemon=True)
     t.start()
@@ -256,7 +254,8 @@ if __name__ == "__main__":
     print(f"   http://{HOST}:{active_port}")
     print("   Presiona Ctrl+C para detener\n")
     import webbrowser
-    webbrowser.open(f"http://{HOST}:{active_port}")
+    if not args.no_browser:
+        webbrowser.open(f"http://{HOST}:{active_port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -266,4 +265,4 @@ if __name__ == "__main__":
         with ser_lock:
             if ser and ser.is_open:
                 ser.close()
-        server.shutdown()
+        server.server_close()

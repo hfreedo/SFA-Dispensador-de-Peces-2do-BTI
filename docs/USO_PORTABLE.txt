@@ -1,0 +1,34 @@
+SFA - Dispensador de Peces 2do. BTI - Windows x64 - v1.1.0
+
+NO NECESITA INSTALAR PYTHON, PIP NI ARDUINO IDE PARA ABRIR EL PANEL.
+
+1. Descargar el ZIP portable desde Releases de GitHub.
+2. Extraer todo el ZIP a una carpeta del equipo. No abrirlo dentro del ZIP.
+3. Abrir SFA_Dispensador_Peces_2BTI.exe.
+4. Esperar a que se abra el navegador con el panel local.
+   Si no se abre, copiar la direccion que muestra la ventana del servidor.
+5. Mantener abierta la ventana del servidor mientras se usa el panel.
+6. Para terminar, pulsar Ctrl+C en esa ventana y cerrar la pestana del panel.
+
+La primera apertura puede tardar unos segundos mientras se prepara el programa.
+El servidor usa 127.0.0.1:8765; si esta ocupado, busca otro puerto libre.
+No requiere permisos de administrador ni instala programas al ejecutarse.
+Sin Internet, el panel utiliza las imagenes locales de los peces como respaldo
+de las animaciones decorativas. El control del Arduino funciona localmente.
+
+PARA CONTROLAR EL PROTOTIPO
+
+- El Arduino debe tener cargado el firmware de esta variante (servo D8,
+  tres NeoPixels D6). El portable no carga ni modifica el firmware.
+- Conectar con un cable USB de datos y cerrar el Monitor Serie de Arduino.
+- Elegir el puerto COM y pulsar Conectar en el panel.
+- Si Windows no reconoce la placa, instalar el controlador USB correspondiente
+  al modelo de placa (por ejemplo CH340 en algunas placas compatibles).
+- Si no hay Arduino conectado, se puede abrir el panel, pero no controlar
+  el mecanismo ni obtener lecturas reales.
+
+Compatibilidad prevista: Windows 10/11 de 64 bits.
+Esta entrega no es un ejecutable para Windows de 32 bits, Linux ni macOS.
+
+Repositorio y descargas:
+https://github.com/hfreedo/SFA-Dispensador-de-Peces-2do-BTI/releases

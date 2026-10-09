@@ -52,7 +52,7 @@ La opción queda guardada en EEPROM y también aparece en la respuesta de `ESTAD
 
 1. Abrir `SFA_Dispensador_Peces_2BTI.ino` en Arduino IDE y cargarlo en un Arduino UNO.
 2. Cerrar el Monitor Serie para liberar el puerto COM.
-3. Ejecutar `server/run.bat`.
+3. Para una PC sin Python, descargar y extraer el ZIP portable desde Releases de GitHub y abrir `SFA_Dispensador_Peces_2BTI.exe`. `server/run.bat` es la alternativa para ejecutar el código fuente con Python instalado.
 4. Elegir el puerto del Arduino y pulsar **Conectar**.
 5. En **Animación de luces**, elegir una opción y pulsar **Aplicar**.
 

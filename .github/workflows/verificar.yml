@@ -29,3 +29,27 @@ jobs:
 
       - name: Verificar JavaScript
         run: node tools/check_ui.js
+
+  portable-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+      - name: Preparar Python de 64 bits
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          architecture: x64
+      - name: Instalar herramientas de empaquetado
+        run: python -m pip install -r tools/requirements-build.txt
+      - name: Construir portable
+        run: python tools/build_portable.py
+      - name: Verificar ZIP extraido sin Python en PATH
+        run: python tools/verify_portable.py dist/SFA_Dispensador_Peces_2BTI_v1.1.0_Windows_x64.zip
+      - name: Guardar entrega
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dispensador-Peces-Windows-x64
+          path: |
+            dist/*_Windows_x64.zip
+            dist/*_Windows_x64.sha256
