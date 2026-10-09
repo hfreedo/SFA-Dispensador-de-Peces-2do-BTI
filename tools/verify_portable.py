@@ -1,5 +1,6 @@
 """Extrae y prueba el EXE con PATH sin Python y directorio de trabajo ajeno."""
 import json
+import http.client
 import os
 import socket
 import subprocess
@@ -15,8 +16,26 @@ def request(base, path, body=None):
     payload = None if body is None else json.dumps(body).encode()
     req = urllib.request.Request(base + path, data=payload,
                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=3) as response:
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    with opener.open(req, timeout=3) as response:
         return response.read()
+
+
+def reserve_test_port():
+    # Fuera del rango efimero de Windows: evita que un cliente HTTP se conecte
+    # accidentalmente consigo mismo mientras el servidor aun esta iniciando.
+    for port in range(19000, 19990, 2):
+        occupied = socket.socket()
+        occupied.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        try:
+            occupied.bind(("127.0.0.1", port))
+            occupied.listen()
+            with socket.socket() as probe:
+                probe.bind(("127.0.0.1", port + 1))
+            return occupied
+        except OSError:
+            occupied.close()
+    raise RuntimeError("No hay un par de puertos libres para la prueba")
 
 
 def main():
@@ -33,12 +52,8 @@ def main():
                 env.pop(key)
         env["PATH"] = str(system_dir)
         # Ocupar el puerto inicial para comprobar el cambio automatico de puerto.
-        with socket.socket() as occupied:
-            occupied.bind(("127.0.0.1", 0))
-            occupied.listen()
+        with reserve_test_port() as occupied:
             port = occupied.getsockname()[1]
-            with socket.socket() as probe:
-                probe.bind(("127.0.0.1", port + 1))
             base = f"http://127.0.0.1:{port + 1}"
             with open(Path(tmp) / "servidor.log", "wb") as log:
                 proc = subprocess.Popen([str(executable), "--no-browser", "--port", str(port)],
@@ -52,7 +67,7 @@ def main():
                         try:
                             health = json.loads(request(base, "/api/health"))
                             break
-                        except OSError:
+                        except (OSError, http.client.HTTPException):
                             if time.monotonic() > deadline:
                                 raise RuntimeError("El portable no respondio en 45 segundos")
                             time.sleep(0.25)
@@ -74,6 +89,7 @@ def main():
                     subprocess.run([str(system_dir / "taskkill.exe"),
                                     "/PID", str(proc.pid), "/T", "/F"], capture_output=True)
                     proc.wait(timeout=15)
+                    time.sleep(0.5)  # Windows puede liberar el archivo despues del proceso.
 
 
 if __name__ == "__main__":
