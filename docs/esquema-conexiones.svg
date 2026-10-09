@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Esquema de conexiones del dispensador de peces</title>
+  <desc id="desc">Arduino UNO conectado a servo en D8, tres NeoPixels en D6, buzzer D12, HC-06 D2 y D3, LCD I2C A4 y A5 y fuente externa con masa común.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071927"/><stop offset="1" stop-color="#10384a"/></linearGradient>
+    <style>
+      .card{fill:#0b2637;stroke:#78d7da;stroke-width:3}.power{fill:#2e2014;stroke:#ffb24a}.uno{fill:#0d5964;stroke:#9cf2ef;stroke-width:4}.t{font:700 28px Arial;fill:#f6fbff}.h{font:700 38px Arial;fill:#f6fbff}.s{font:20px Arial;fill:#c5dce2}.pin{font:700 20px Consolas;fill:#ffcf75}.wire{fill:none;stroke-width:5}.signal{stroke:#7ae0e3}.five{stroke:#ff5c5c}.gnd{stroke:#d7e0e3}.i2c{stroke:#d68cff}.note{font:18px Arial;fill:#9fc2ca}.led{stroke:#8ef5c1;stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <text x="70" y="65" class="h">Esquema de conexiones · Arduino UNO</text>
+  <text x="70" y="103" class="s">SFA Dispensador de Peces 2.º BTI · servo D8 · NeoPixels D6</text>
+
+  <rect class="uno" x="610" y="190" width="380" height="590" rx="28"/>
+  <text x="700" y="250" class="h">ARDUINO UNO</text>
+  <text x="650" y="315" class="pin">D2  ← HC-06 TXD</text>
+  <text x="650" y="370" class="pin">D3  → divisor → RXD</text>
+  <text x="650" y="425" class="pin">D6  → resistencia → DIN</text>
+  <text x="650" y="480" class="pin">D8  → señal SG90</text>
+  <text x="650" y="535" class="pin">D12 → buzzer +</text>
+  <text x="650" y="590" class="pin">A4  → LCD SDA</text>
+  <text x="650" y="645" class="pin">A5  → LCD SCL</text>
+  <text x="650" y="700" class="pin">GND → masa común</text>
+  <text x="680" y="750" class="note">USB: programación y servidor</text>
+
+  <rect class="card" x="80" y="180" width="360" height="180" rx="20"/>
+  <text x="115" y="230" class="t">HC-06 Bluetooth</text>
+  <text x="115" y="275" class="s">TXD → D2</text>
+  <text x="115" y="310" class="s">RXD ← divisor desde D3</text>
+  <text x="115" y="342" class="note">1 kΩ arriba + 2 kΩ a GND</text>
+  <path class="wire signal" d="M440 270 H525 V315 H610"/>
+  <path class="wire signal" d="M440 315 H505 V370 H610"/>
+
+  <rect class="card" x="80" y="430" width="360" height="180" rx="20"/>
+  <text x="115" y="480" class="t">LCD 16×2 I2C</text>
+  <text x="115" y="525" class="s">SDA → A4 · SCL → A5</text>
+  <text x="115" y="560" class="s">VCC → 5 V · GND común</text>
+  <path class="wire i2c" d="M440 515 H520 V590 H610"/>
+  <path class="wire i2c" d="M440 550 H540 V645 H610"/>
+
+  <rect class="card" x="80" y="680" width="360" height="140" rx="20"/>
+  <text x="115" y="730" class="t">Buzzer pasivo</text>
+  <text x="115" y="775" class="s">+ → D12 · − → GND</text>
+  <path class="wire signal" d="M440 750 H545 V535 H610"/>
+
+  <rect class="card" x="1160" y="150" width="360" height="175" rx="20"/>
+  <text x="1195" y="200" class="t">Servo SG90</text>
+  <text x="1195" y="245" class="s">Señal → D8</text>
+  <text x="1195" y="280" class="s">Rojo → 5 V externo</text>
+  <text x="1195" y="312" class="s">Marrón/negro → GND común</text>
+  <path class="wire signal" d="M990 480 H1080 V235 H1160"/>
+
+  <rect class="card" x="1160" y="390" width="360" height="245" rx="20"/>
+  <text x="1195" y="440" class="t">Tira WS2812B · 3 LED</text>
+  <text x="1195" y="485" class="s">DIN ← D6 mediante resistencia</text>
+  <text x="1195" y="520" class="pin">Actual: 1 kΩ · preferido: 330–470 Ω</text>
+  <text x="1195" y="555" class="s">+5 V externo · GND común</text>
+  <circle class="led" cx="1240" cy="600" r="18" fill="#32e789"/><circle class="led" cx="1300" cy="600" r="18" fill="#42b9ff"/><circle class="led" cx="1360" cy="600" r="18" fill="#ff7663"/>
+  <path class="wire signal" d="M990 425 H1070 V475 H1160"/>
+
+  <rect class="power" x="1090" y="740" width="430" height="175" rx="20"/>
+  <text x="1125" y="790" class="t">Fuente externa regulada</text>
+  <text x="1125" y="835" class="s">5 V · ≥ 2 A recomendado</text>
+  <text x="1125" y="870" class="s">Servo + tira · capacitor 500–1000 µF</text>
+  <path class="wire five" d="M1305 740 V635"/><path class="wire five" d="M1370 740 V325"/>
+  <path class="wire gnd" d="M1160 895 H1040 V700 H990"/>
+
+  <line x1="80" y1="940" x2="150" y2="940" class="wire signal"/><text x="165" y="947" class="note">señal</text>
+  <line x1="290" y1="940" x2="360" y2="940" class="wire five"/><text x="375" y="947" class="note">+5 V externo</text>
+  <line x1="555" y1="940" x2="625" y2="940" class="wire gnd"/><text x="640" y="947" class="note">GND común</text>
+  <text x="850" y="947" class="note">No alimentar servo y tira desde el pin 5 V del UNO.</text>
+</svg>

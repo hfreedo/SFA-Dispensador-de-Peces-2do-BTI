@@ -1,0 +1,31 @@
+name: Verificar proyecto
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  firmware-y-panel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Instalar core y bibliotecas
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+          arduino-cli lib install "Servo" "LiquidCrystal I2C" "Adafruit NeoPixel"
+
+      - name: Compilar para Arduino UNO
+        run: arduino-cli compile --fqbn arduino:avr:uno SFA_Dispensador_Peces_2BTI
+
+      - name: Verificar Python
+        run: python -m py_compile server/server.py
+
+      - name: Verificar JavaScript
+        run: node tools/check_ui.js

@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+build/
+dist/
+*.log
+server/static/reef-palette-check.png
+server/static/visibility-check.png
+docs/img/arquitectura.png
+docs/img/esquema-conexiones.png
