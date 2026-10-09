@@ -2,7 +2,7 @@
 
 ![Arduino UNO](https://img.shields.io/badge/Arduino-UNO-00878F?logo=arduino&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![Interfaz](https://img.shields.io/badge/interfaz-local-HTML%20%2B%20Serial-7AD4D6)
+![Interfaz](https://img.shields.io/badge/Interfaz-HTML%20%2B%20Serial-7AD4D6)
 ![Verificación](https://github.com/hfreedo/SFA-Dispensador-de-Peces-2do-BTI/actions/workflows/verificar.yml/badge.svg)
 
 Prototipo educativo de alimentación programada para peces con **Arduino UNO**, servomotor, LCD, Bluetooth y una tira de tres NeoPixels. Incluye una interfaz web local para configurar horarios, intervalos, movimiento del servo y animaciones LED.
